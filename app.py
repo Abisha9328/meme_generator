@@ -1,10 +1,11 @@
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
-import string
 
 # Centered text drawing
 def draw_text(draw, text, font, image_width, y_position):
-    text_width, _ = draw.textsize(text, font=font)
+    # Get bounding box
+    bbox = draw.textbbox((0, 0), text, font=font)
+    text_width = bbox[2] - bbox[0]
     x_position = (image_width - text_width) // 2
     draw.text(
         (x_position, y_position),
@@ -23,13 +24,20 @@ def create_meme(image, top_text, bottom_text):
 
     # Use default font size proportional to image height
     font_size = int(image_height * 0.08)
-    font = ImageFont.load_default()
+
+    try:
+        # Try to load a default truetype font
+        font = ImageFont.truetype("DejaVuSans-Bold.ttf", font_size)
+    except:
+        # Fallback to default bitmap font if DejaVu is not available
+        font = ImageFont.load_default()
 
     # Draw top text
     draw_text(draw, top_text.upper(), font, image_width, 10)
 
-    # Draw bottom text
-    text_height = draw.textsize(bottom_text, font=font)[1]
+    # Get bottom text height
+    bbox = draw.textbbox((0, 0), bottom_text, font=font)
+    text_height = bbox[3] - bbox[1]
     draw_text(draw, bottom_text.upper(), font, image_width, image_height - text_height - 10)
 
     return image
