@@ -39,8 +39,7 @@ meme-generator/
 └── README.md
 
 **Demo**
-Live app:https://memegenerator-uxcrybknneferrlnvzcdky.streamlit.app/
-
+Live app-  https://memegenerator-uxcrybknneferrlnvzcdky.streamlit.app/
 
 __📃 License__
 MIT License
